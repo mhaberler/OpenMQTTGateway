@@ -29,7 +29,7 @@
 #define user_config_h
 /*-------------------VERSION----------------------*/
 #ifndef OMG_VERSION
-#  define OMG_VERSION "version_tag"
+#  define OMG_VERSION "mah"
 #endif
 
 /*-------------CONFIGURE WIFIMANAGER-------------(only ESP8266 & SONOFF RFBridge)*/
@@ -83,7 +83,9 @@
 #endif
 
 #if defined(ESP8266) || defined(ESP32) // for nodemcu, weemos and esp8266
-//#  define ESPWifiManualSetup true //uncomment you don't want to use wifimanager for your credential settings on ESP
+#  define ESPWifiManualSetup true //uncomment you don't want to use wifimanager for your credential settings on ESP
+
+#define MQTT_SECURE_DEFAULT 1
 #else // for arduino boards
 const byte ip[] = {192, 168, 1, 99};
 const byte mac[] = {0xDE, 0xED, 0xBA, 0xFE, 0x54, 0x95}; //W5100 ethernet shield MAC address
@@ -113,10 +115,10 @@ const byte mac[] = {0xDE, 0xED, 0xBA, 0xFE, 0x54, 0x95}; //W5100 ethernet shield
 
 #if defined(ESPWifiManualSetup) // for nodemcu, weemos and esp8266
 #  ifndef wifi_ssid
-#    define wifi_ssid "wifi ssid"
+#    define wifi_ssid "kehrer"
 #  endif
 #  ifndef wifi_password
-#    define wifi_password "wifi password"
+#    define wifi_password "stiwoll4711"
 #  endif
 #endif
 
@@ -169,16 +171,16 @@ const byte mac[] = {0xDE, 0xED, 0xBA, 0xFE, 0x54, 0x95}; //W5100 ethernet shield
 #endif
 
 #ifndef MQTT_USER
-#  define MQTT_USER "your_username"
+#  define MQTT_USER "omgw"
 #endif
 #ifndef MQTT_PASS
-#  define MQTT_PASS "your_password"
+#  define MQTT_PASS "eey4Vie3ohm6etho4Thequ8eGhoohaex"
 #endif
 #ifndef MQTT_SERVER
-#  define MQTT_SERVER "192.168.1.17"
+#  define MQTT_SERVER "mqtt.mah.priv.at"
 #endif
 #ifndef MQTT_PORT
-#  define MQTT_PORT "1883"
+#  define MQTT_PORT "8883"
 #endif
 
 #ifndef GeneralTimeOut
