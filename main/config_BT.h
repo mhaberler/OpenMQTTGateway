@@ -85,7 +85,7 @@ extern int btQueueLengthCount;
 #  define AdaptiveBLEScan true // Sets adaptive scanning, this will automatically decide on the best passive and active scanning intervals
 #endif
 #ifndef TimeBtwActive
-#  define TimeBtwActive 55555 //define default time between two BLE active scans when general passive scanning is selected; in milliseconds
+#  define TimeBtwActive 360000000 //define default time between two BLE active scans when general passive scanning is selected; in milliseconds
 #endif
 #ifndef MinTimeBtwScan
 #  define MinTimeBtwScan 100 //define the time between two scans; in milliseconds

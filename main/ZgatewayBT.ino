@@ -966,7 +966,7 @@ void setupBTTasksAndBLE() {
   xTaskCreatePinnedToCore(
       procBLETask, /* Function to implement the task */
       "procBLETask", /* Name of the task */
-      6072, /* Stack size in bytes */
+      8192, /* Stack size in bytes */
       NULL, /* Task input parameter */
       2, /* Priority of the task (set higher than core task) */
       &xProcBLETaskHandle, /* Task handle. */
@@ -976,7 +976,7 @@ void setupBTTasksAndBLE() {
   xTaskCreatePinnedToCore(
       coreTask, /* Function to implement the task */
       "coreTask", /* Name of the task */
-      5120, /* Stack size in bytes */
+      8192, /* Stack size in bytes */
       NULL, /* Task input parameter */
       1, /* Priority of the task */
       &xCoreTaskHandle, /* Task handle. */
