@@ -218,7 +218,16 @@ struct GfSun2000Data {};
 #if defined(ZgatewayRS232)
 #  include "config_RS232.h"
 #endif
+#if defined(USE_PICOMQTT)
+#include <PicoMQTT.h>
+#include <PicoWebsocket.h>
+#endif
 /*------------------------------------------------------------------------*/
+
+::WiFiServer ptcp_server(MQTT_TCP);
+::WiFiServer pserver(MQTT_WS);
+PicoWebsocket::Server<::WiFiServer> pwebsocket_server(pserver);
+PicoMQTT::Server pmqtt(ptcp_server, pwebsocket_server);
 
 void setupTLS(bool self_signed = false, uint8_t index = 0);
 
@@ -654,7 +663,8 @@ void pubMQTT(const char* topic, const char* payload, bool retainFlag) {
   if (client.connected()) {
     SendReceiveIndicatorON();
     Log.trace(F("[ OMG->MQTT ] topic: %s msg: %s " CR), topic, payload);
-    client.publish(topic, payload, retainFlag);
+    // client.publish(topic, payload, retainFlag);
+    pmqtt.publish(topic, payload);
   } else {
     Log.warning(F("Client not connected, aborting the publication" CR));
   }
@@ -1306,6 +1316,8 @@ void setup() {
   char jsonChar[100];
   serializeJson(modules, jsonChar, measureJson(modules) + 1);
   Log.notice(F("OpenMQTTGateway modules: %s" CR), jsonChar);
+  pmqtt.begin();
+
   Log.notice(F("************** Setup OpenMQTTGateway end **************" CR));
 }
 
@@ -1971,6 +1983,8 @@ void connectMQTTmdns() {
 #endif
 
 void loop() {
+  pmqtt.loop();
+
 #ifndef ESPWifiManualSetup
   checkButton(); // check if a reset of wifi/mqtt settings is asked
 #endif
