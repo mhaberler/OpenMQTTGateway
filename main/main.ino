@@ -660,6 +660,7 @@ void pubMQTT(const char* topic, const char* payload) {
  * @param retainFlag  true if retain the retain Flag
  */
 void pubMQTT(const char* topic, const char* payload, bool retainFlag) {
+#ifndef DISABLE_PUBSUB_CLIENT
   if (client.connected()) {
     SendReceiveIndicatorON();
     Log.trace(F("[ OMG->MQTT ] topic: %s msg: %s " CR), topic, payload);
@@ -668,6 +669,10 @@ void pubMQTT(const char* topic, const char* payload, bool retainFlag) {
   } else {
     Log.warning(F("Client not connected, aborting the publication" CR));
   }
+#else
+    Log.trace(F("[ OMG->broker ] topic: %s msg: %s " CR), topic, payload);
+    pmqtt.publish(topic, payload);
+#endif
 }
 
 void pubMQTT(String topic, const char* payload) {
@@ -844,12 +849,15 @@ void connectMQTT() {
   strcat(topic, will_Topic);
   client.setBufferSize(mqtt_max_packet_size);
   client.setSocketTimeout(GeneralTimeOut - 1);
+#ifndef DISABLE_PUBSUB_CLIENT
 #if AWS_IOT
   if (client.connect(gateway_name, mqtt_user, mqtt_pass)) { // AWS doesn't support will topic for the moment
 #else
   if (client.connect(gateway_name, mqtt_user, mqtt_pass, topic, will_QoS, will_Retain, will_Message)) {
 #endif
-
+#else
+  if (true) {
+#endif
     displayPrint("MQTT connected");
     Log.notice(F("Connected to broker" CR));
     failure_number_mqtt = 0;
